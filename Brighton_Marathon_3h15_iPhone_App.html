@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#123b32">
+<title>Brighton Marathon 3:15 Planner</title>
+<style>
+:root{--ink:#172b27;--muted:#65736e;--bg:#f3f6f4;--card:#fff;--green:#123b32;--green2:#dcebe4;--line:#e0e7e2;--accent:#c5e4d3;--orange:#f4e4c9}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding-bottom:calc(26px + env(safe-area-inset-bottom))}
+header{background:var(--green);color:white;padding:calc(18px + env(safe-area-inset-top)) 18px 20px;border-radius:0 0 22px 22px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.8;font-weight:700}.hero{font-size:26px;font-weight:800;line-height:1.15;margin:7px 0}.sub{opacity:.9;font-size:14px}.hero-stats{display:flex;gap:10px;margin-top:16px}.stat{background:#ffffff17;border:1px solid #ffffff30;border-radius:14px;padding:10px 12px;flex:1}.stat b{display:block;font-size:18px}.stat span{font-size:11px;opacity:.85}
+nav{display:flex;gap:8px;padding:12px 14px;overflow:auto;position:sticky;top:0;background:var(--bg);z-index:5}nav button{border:1px solid var(--line);background:white;border-radius:999px;padding:9px 14px;font-weight:700;color:var(--muted);white-space:nowrap}nav button.active{background:var(--green);color:white;border-color:var(--green)}
+main{padding:0 14px;max-width:700px;margin:auto}.panel{display:none}.panel.active{display:block}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:0 0 12px;box-shadow:0 2px 8px #153c2b08}.row{display:flex;justify-content:space-between;align-items:center;gap:12px}.muted{color:var(--muted)}.small{font-size:13px}.pill{background:var(--green2);color:var(--green);padding:5px 9px;border-radius:999px;font-size:12px;font-weight:800;white-space:nowrap}.progress{height:8px;background:#e7ece8;border-radius:99px;overflow:hidden;margin:10px 0}.progress>div{height:100%;background:#4d9b75;width:0;transition:width .2s}.big{font-size:22px;font-weight:800}.week-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.week-head h2{font-size:20px;margin:0 0 3px}.section-label{font-size:11px;text-transform:uppercase;letter-spacing:.09em;font-weight:800;color:var(--muted);margin:17px 0 6px}.session{border-top:1px solid var(--line);padding:12px 0}.session:first-of-type{border-top:0}.session-title{font-weight:800;font-size:14px}.session p{margin:4px 0 0}.checkline{display:flex;align-items:flex-start;gap:10px}.checkline input{width:21px;height:21px;accent-color:var(--green);margin:1px 0 0;flex-shrink:0}.checkline label{flex:1}.done label{text-decoration:line-through;color:#7a8781}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.btn{border:0;border-radius:12px;padding:11px 14px;background:var(--green);color:white;font-weight:800}.btn.secondary{background:#edf2ee;color:var(--green)}.btn.danger{background:#f8e9e7;color:#8d312b}.select{width:100%;border:1px solid var(--line);background:white;border-radius:12px;padding:12px;font-size:16px;color:var(--ink)}.note{background:#fff8eb;border:1px solid #f0e0c4;border-radius:14px;padding:12px;font-size:13px}.pace-grid{display:grid;grid-template-columns:1fr;gap:9px}.pace{padding:13px;border:1px solid var(--line);border-radius:14px;background:white}.pace h3{margin:0;font-size:15px}.pace .target{font-weight:800;color:var(--green);margin:4px 0}.table-item{padding:12px 0;border-bottom:1px solid var(--line)}.table-item:last-child{border-bottom:0}footer{text-align:center;color:var(--muted);font-size:12px;padding:18px}
+</style>
+</head>
+<body>
+<header>
+ <div class="eyebrow">Your training companion</div>
+ <div class="hero">Brighton Marathon<br>3:15 Planner</div>
+ <div class="sub">22-week plan · 2 Nov 2026 – 4 Apr 2027</div>
+ <div class="hero-stats"><div class="stat"><b>3:15:00</b><span>Goal finish</span></div><div class="stat"><b>4:37/km</b><span>Goal marathon pace</span></div></div>
+</header>
+<nav id="tabs">
+<button class="active" data-tab="today">This week</button><button data-tab="plan">All weeks</button><button data-tab="paces">Pace guide</button><button data-tab="routine">Weekly routine</button><button data-tab="strength">Strength</button>
+</nav>
+<main>
+<section id="today" class="panel active">
+ <div class="card">
+  <div class="row"><div><div class="section-label" style="margin-top:0">Training progress</div><div class="big" id="completedCount">0 sessions completed</div></div><span class="pill" id="progressPct">0%</span></div>
+  <div class="progress"><div id="progressBar"></div></div>
+  <div class="small muted" id="progressCaption">Tick off sessions as you complete them. Your progress is saved on this device.</div>
+ </div>
+ <div class="card">
+  <div class="row"><label for="weekSelect" style="font-weight:800">Choose training week</label><span class="pill" id="phasePill">Base</span></div>
+  <select class="select" id="weekSelect" aria-label="Choose training week"></select>
+ </div>
+ <div id="weekContent"></div>
+ <div class="actions"><button class="btn secondary" id="prevWeek">← Previous</button><button class="btn" id="nextWeek">Next week →</button></div>
+</section>
+<section id="plan" class="panel">
+ <div class="card"><h2 style="margin-top:0">22-week overview</h2><p class="muted small">Select any week to see the detailed sessions and tick them off.</p><div id="weekList"></div></div>
+</section>
+<section id="paces" class="panel">
+ <div class="card"><h2 style="margin-top:0">Pace guide</h2><p class="muted small">Starting targets, not rigid rules. Let effort, heart rate, weather and recovery guide you.</p><div class="pace-grid" id="paceGrid"></div></div>
+ <div class="note">Threshold and marathon-pace targets are provisional. If recovery is incomplete or a session feels unusually hard, slow down, shorten it or run easy.</div>
+</section>
+<section id="routine" class="panel">
+ <div class="card"><h2 style="margin-top:0">Default weekly structure</h2><p class="muted small">Adjust distances to match the target mileage and how you are recovering.</p><div id="routineList"></div></div>
+</section>
+<section id="strength" class="panel">
+ <div class="card"><h2 style="margin-top:0">Strength A · Monday</h2><p class="muted small">25–35 minutes · preferably after an easy run.</p><div id="strengthA"></div></div>
+ <div class="card"><h2 style="margin-top:0">Strength B · Friday (light)</h2><p class="muted small">15–25 minutes · keep legs fresh for the weekend.</p><div id="strengthB"></div></div>
+ <div class="note">After the October marathon, restart with bodyweight/light loads. Reduce sets in peak weeks and substantially reduce strength volume in the final 3 weeks. Avoid unfamiliar exercises close to race day.</div>
+</section>
+<div class="card">
+ <h3 style="margin-top:0">Your data</h3><p class="small muted">Completion ticks and the selected week are stored in this browser on this iPhone. They do not automatically sync to COROS or other devices.</p>
+ <div class="actions"><button class="btn secondary" id="exportBtn">Export progress</button><button class="btn secondary" id="importBtn">Import progress</button><button class="btn danger" id="resetBtn">Reset ticks</button><input id="fileInput" type="file" accept="application/json" hidden></div>
+</div>
+</main>
+<footer>Plan guide only · Prioritise recovery and consistency over hitting every kilometre target.</footer>
+<script>
+const DATA = {"race": "Brighton Marathon — Sunday 4 April 2027", "goal": "3:15:00 · 4:37/km", "plan": [{"week": 1, "dates": "02 Nov–08 Nov 2026", "km": "35–45", "tue": "Easy only; no workout", "thu": "Easy aerobic", "sun": "12–16 km easy", "other": "Short easy runs only; mobility", "notes": "Recovery/re-entry; run only if soreness and fatigue have settled."}, {"week": 2, "dates": "09 Nov–15 Nov 2026", "km": "50–60", "tue": "Easy; optional 6 × 20 sec relaxed strides", "thu": "Easy aerobic", "sun": "16–20 km easy", "other": "Conversational effort", "notes": "No threshold work yet; reduce if recovery is incomplete."}, {"week": 3, "dates": "16 Nov–22 Nov 2026", "km": "65–75", "tue": "3 × 8 min controlled threshold, 2 min jog", "thu": "Easy aerobic", "sun": "20–22 km easy", "other": "Mostly easy", "notes": "Resume workouts only if feeling normal."}, {"week": 4, "dates": "23 Nov–29 Nov 2026", "km": "80–85", "tue": "4 × 8 min controlled threshold, 2 min jog", "thu": "14–16 km aerobic", "sun": "22–24 km easy", "other": "Easy/recovery mileage", "notes": "Do not force mileage if recovery is poor."}, {"week": 5, "dates": "30 Nov–06 Dec 2026", "km": "90", "tue": "4 × 2 km threshold, 2 min jog", "thu": "14–16 km aerobic", "sun": "24–26 km easy", "other": "Easy/recovery mileage", "notes": "Controlled, not race effort; practise fuelling."}, {"week": 6, "dates": "07 Dec–13 Dec 2026", "km": "95", "tue": "3 × 3 km threshold, 2–3 min jog", "thu": "16–18 km aerobic", "sun": "26–28 km easy", "other": "Easy/recovery mileage", "notes": "Practise long-run fuelling."}, {"week": 7, "dates": "14 Dec–20 Dec 2026", "km": "80–85", "tue": "3 × 8 min threshold", "thu": "12–14 km easy", "sun": "22–24 km easy", "other": "Cutback week", "notes": "Absorb training."}, {"week": 8, "dates": "21 Dec–27 Dec 2026", "km": "95", "tue": "5 × 2 km threshold, 2 min jog", "thu": "16–18 km aerobic", "sun": "26–28 km easy", "other": "Easy/recovery mileage", "notes": "Protect sleep and consistency."}, {"week": 9, "dates": "28 Dec–03 Jan 2027", "km": "100", "tue": "4 × 2.5 km threshold, 2 min jog", "thu": "16–18 km aerobic", "sun": "28 km easy", "other": "Easy/recovery mileage", "notes": "Avoid adding faster reps if fatigued."}, {"week": 10, "dates": "04 Jan–10 Jan 2027", "km": "85–90", "tue": "4 × 8 min threshold", "thu": "12–15 km easy", "sun": "23–25 km easy", "other": "Cutback week", "notes": "Keep all efforts controlled."}, {"week": 11, "dates": "11 Jan–17 Jan 2027", "km": "100", "tue": "3 × 3 km threshold, 2–3 min jog", "thu": "16–18 km aerobic", "sun": "28–30 km easy", "other": "Easy/recovery mileage", "notes": "Long run mostly easy."}, {"week": 12, "dates": "18 Jan–24 Jan 2027", "km": "105", "tue": "6 × 2 km threshold, 2 min jog", "thu": "16–18 km aerobic", "sun": "28 km; last 5 km steady only if fresh", "other": "Easy/recovery mileage", "notes": "Steady is not marathon pace."}, {"week": 13, "dates": "25 Jan–31 Jan 2027", "km": "90", "tue": "3 × 2 km threshold", "thu": "14–16 km easy", "sun": "24–26 km easy", "other": "Cutback week", "notes": "Prioritise recovery."}, {"week": 14, "dates": "01 Feb–07 Feb 2027", "km": "105", "tue": "4 × 2.5 km threshold", "thu": "3 × 4 km at MP within 16–20 km total", "sun": "30 km easy", "other": "Easy/recovery mileage", "notes": "MP blocks only if well recovered."}, {"week": 15, "dates": "08 Feb–14 Feb 2027", "km": "105–110", "tue": "3 × 3 km threshold", "thu": "14–18 km aerobic", "sun": "30–32 km easy", "other": "Easy/recovery mileage", "notes": "Peak mileage only if recovery remains good."}, {"week": 16, "dates": "15 Feb–21 Feb 2027", "km": "90–95", "tue": "3 × 8 min controlled threshold", "thu": "12–15 km easy", "sun": "24–26 km easy", "other": "Cutback week", "notes": "Cut volume if fatigue or niggles persist."}, {"week": 17, "dates": "22 Feb–28 Feb 2027", "km": "105", "tue": "5 × 2 km threshold", "thu": "12–14 km at MP within medium-long run", "sun": "30 km easy", "other": "Easy/recovery mileage", "notes": "Avoid making Thursday and Sunday both hard."}, {"week": 18, "dates": "01 Mar–07 Mar 2027", "km": "105–110", "tue": "Controlled threshold, e.g. 4 × 2 km", "thu": "14–16 km aerobic or 2 × 4 km MP if fresh", "sun": "30–32 km with 10–12 km at MP only if robust", "other": "Easy/recovery mileage", "notes": "Peak specific week; skip MP finish if tired."}, {"week": 19, "dates": "08 Mar–14 Mar 2027", "km": "90–100", "tue": "3 × 2 km threshold", "thu": "12–16 km easy", "sun": "26–28 km with 6–8 km MP if fresh", "other": "Cutback / recovery", "notes": "Last substantial long run."}, {"week": 20, "dates": "15 Mar–21 Mar 2027", "km": "75–85", "tue": "3 × 2 km threshold or 3 × 10 min", "thu": "3 × 4 km at MP within 16–18 km total", "sun": "24 km easy", "other": "Reduce strength volume", "notes": "Taper starts; finish workouts feeling strong."}, {"week": 21, "dates": "22 Mar–28 Mar 2027", "km": "55–65", "tue": "2 × 4 km at MP, controlled", "thu": "10–12 km easy with 4–6 short strides", "sun": "16–18 km easy", "other": "Short easy runs; light strength only", "notes": "Reduce fatigue, retain rhythm."}, {"week": 22, "dates": "29 Mar–04 Apr 2027", "km": "~45–55 incl. race", "tue": "8–10 km easy with 3 × 1 km at MP early in week", "thu": "6–8 km easy with a few strides", "sun": "Brighton Marathon — Sun 4 Apr (42.2 km)", "other": "Rest/easy short runs; no strength workout", "notes": "Race week total includes marathon."}], "paces": [{"type": "Recovery", "pace": "5:45–6:20/km or slower", "effort": "Very easy; full conversation", "notes": "Slow further if tired or conditions are poor."}, {"type": "Easy aerobic", "pace": "5:25–6:10/km", "effort": "Comfortable conversational", "notes": "Effort and heart rate matter more than pace."}, {"type": "Steady", "pace": "5:00–5:25/km", "effort": "Moderate, controlled", "notes": "Use sparingly; not another threshold session."}, {"type": "Marathon pace", "pace": "4:37/km", "effort": "Controlled and sustainable", "notes": "Goal pace for 3:15."}, {"type": "Threshold (initial)", "pace": "4:25–4:35/km", "effort": "Comfortably hard; repeatable", "notes": "Provisional; adjust to post-marathon form and session control."}, {"type": "10 km-effort repetitions", "pace": "4:05–4:15/km", "effort": "Firm, controlled reps", "notes": "Optional, introduced sparingly."}, {"type": "Strides", "pace": "15–20 sec fast/relaxed", "effort": "Smooth, not sprinting", "notes": "Full recovery between strides."}, {"type": "Long run", "pace": "Usually 5:25–6:10/km", "effort": "Easy aerobic", "notes": "Selected later runs include controlled MP blocks."}], "template": [{"day": "Monday", "run": "8–12 km easy", "strength": "Strength A, 25–35 min", "purpose": "Easy start to week; strength after run."}, {"day": "Tuesday", "run": "15–19 km total incl. workout", "strength": "Mobility only", "purpose": "Main threshold session incl. warm-up and cool-down."}, {"day": "Wednesday", "run": "12–16 km easy", "strength": "Optional mobility", "purpose": "Aerobic volume, conversational."}, {"day": "Thursday", "run": "14–18 km medium-long; later selected MP blocks", "strength": "No heavy strength", "purpose": "Mostly aerobic; avoid making every Thursday hard."}, {"day": "Friday", "run": "8–10 km easy", "strength": "Strength B, 15–25 min, light", "purpose": "Keep legs fresh for weekend."}, {"day": "Saturday", "run": "Rest or 6–8 km recovery", "strength": "Optional mobility", "purpose": "Recovery day; running is not compulsory."}, {"day": "Sunday", "run": "Long run 12–32 km by phase", "strength": "None", "purpose": "Mostly easy; only selected long runs include MP."}], "strengthA": [{"exercise": "Romanian deadlift", "sets": "3 × 6–8", "guidance": "Controlled; stop before form breaks."}, {"exercise": "Split squat", "sets": "3 × 8 each leg", "guidance": "Build gradually; no maximal loading."}, {"exercise": "Standing calf raise", "sets": "3 × 10–15", "guidance": "Full range, controlled lowering."}, {"exercise": "Bent-knee calf raise", "sets": "3 × 10–15", "guidance": "Targets soleus; progress slowly."}, {"exercise": "Side plank", "sets": "3 sets each side", "guidance": "Hold with good form."}], "strengthB": [{"exercise": "Step-ups", "sets": "2 × 8 each leg", "guidance": "Moderate height, controlled movement."}, {"exercise": "Single-leg glute bridge", "sets": "2 × 10 each leg", "guidance": "Keep pelvis level."}, {"exercise": "Hamstring curl", "sets": "2 × 10", "guidance": "Smooth, controlled reps."}, {"exercise": "Bent-knee calf raise", "sets": "2 × 12", "guidance": "Light/moderate load."}, {"exercise": "Dead bug", "sets": "2 × 10 each side", "guidance": "Slow, controlled core work."}]};
+const STORE='brighton315planner_v1';
+let state={week:1,done:{}};
+try{const saved=JSON.parse(localStorage.getItem(STORE)||'null');if(saved)state={...state,...saved};}catch(e){}
+const $=id=>document.getElementById(id);
+function save(){try{localStorage.setItem(STORE,JSON.stringify(state));}catch(e){} updateProgress();}
+function sessions(w){return [
+ {id:'tue',title:'Tuesday · Key session',text:w.tue},
+ {id:'thu',title:'Thursday · Aerobic / marathon pace',text:w.thu},
+ {id:'sun',title:'Sunday · Long run',text:w.sun},
+ {id:'other',title:'Other running / recovery',text:w.other}
+];}
+function phase(w){if(w.week<=4)return 'Re-entry / base';if(w.week<=13)return 'Aerobic build';if(w.week<=19)return 'Marathon specific';return 'Taper / race';}
+function renderWeek(){
+ const w=DATA.plan.find(x=>x.week===Number(state.week))||DATA.plan[0];
+ $('weekSelect').value=String(w.week);$('phasePill').textContent=phase(w);
+ $('weekContent').innerHTML=`<div class="card"><div class="week-head"><div><h2>Week ${w.week} of 22</h2><div class="muted small">${w.dates}</div></div><span class="pill">${w.km} km</span></div><div class="section-label">Key sessions</div>${sessions(w).map(s=>`<div class="session ${state.done[w.week+'-'+s.id]?'done':''}"><div class="checkline"><input type="checkbox" id="c-${s.id}" data-key="${w.week+'-'+s.id}" ${state.done[w.week+'-'+s.id]?'checked':''}><label for="c-${s.id}"><div class="session-title">${s.title}</div><p>${s.text}</p></label></div></div>`).join('')}<div class="section-label">Coach’s note</div><p style="margin:0">${w.notes}</p></div>`;
+ $('weekContent').querySelectorAll('input[type=checkbox]').forEach(cb=>cb.addEventListener('change',e=>{state.done[e.target.dataset.key]=e.target.checked;save();renderWeek();}));
+ $('prevWeek').disabled=w.week===1;$('nextWeek').disabled=w.week===22;
+ $('prevWeek').style.opacity=w.week===1?'.45':'1';$('nextWeek').style.opacity=w.week===22?'.45':'1';
+}
+function updateProgress(){
+ const total=DATA.plan.length*4;const count=Object.values(state.done).filter(Boolean).length;const pct=Math.round(count/total*100);
+ $('completedCount').textContent=`${count} of ${total} sessions ticked off`;$('progressPct').textContent=pct+'%';$('progressBar').style.width=pct+'%';
+ $('progressCaption').textContent=`${pct}% of planned session checkboxes completed · saved on this device`;
+}
+function init(){
+ DATA.plan.forEach(w=>{const o=document.createElement('option');o.value=w.week;o.textContent=`Week ${w.week} · ${w.dates} · ${w.km} km`; $('weekSelect').appendChild(o);});
+ $('weekSelect').addEventListener('change',e=>{state.week=Number(e.target.value);save();renderWeek();});
+ $('prevWeek').onclick=()=>{state.week=Math.max(1,Number(state.week)-1);save();renderWeek();};
+ $('nextWeek').onclick=()=>{state.week=Math.min(22,Number(state.week)+1);save();renderWeek();};
+ $('weekList').innerHTML=DATA.plan.map(w=>`<div class="table-item"><div class="row"><div><b>Week ${w.week}</b><div class="small muted">${w.dates}</div></div><span class="pill">${w.km} km</span></div><div class="small" style="margin-top:5px">${w.tue}</div><div class="actions"><button class="btn secondary" data-open="${w.week}">View week</button></div></div>`).join('');
+ $('weekList').querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>{state.week=Number(b.dataset.open);save();renderWeek();showTab('today');window.scrollTo({top:0,behavior:'smooth'});});
+ $('paceGrid').innerHTML=DATA.paces.map(p=>`<div class="pace"><h3>${p.type}</h3><div class="target">${p.pace}</div><div>${p.effort}</div><div class="small muted" style="margin-top:4px">${p.notes}</div></div>`).join('');
+ $('routineList').innerHTML=DATA.template.map(x=>`<div class="table-item"><b>${x.day}</b><div>${x.run}</div><div class="small"><b>Strength / mobility:</b> ${x.strength}</div><div class="small muted">${x.purpose}</div></div>`).join('');
+ $('strengthA').innerHTML=DATA.strengthA.map(x=>`<div class="table-item"><b>${x.exercise}</b><div>${x.sets}</div><div class="small muted">${x.guidance}</div></div>`).join('');
+ $('strengthB').innerHTML=DATA.strengthB.map(x=>`<div class="table-item"><b>${x.exercise}</b><div>${x.sets}</div><div class="small muted">${x.guidance}</div></div>`).join('');
+ renderWeek();updateProgress();
+}
+function showTab(id){document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+$('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='brighton315-progress.json';a.click();URL.revokeObjectURL(url);};
+$('importBtn').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(typeof x==='object'&&x.done){state={...state,...x};state.week=Math.max(1,Math.min(22,Number(state.week)||1));save();renderWeek();alert('Progress imported.');}else alert('That file does not look like a planner progress backup.');}catch(err){alert('Could not read that file.');}e.target.value='';};
+$('resetBtn').onclick=()=>{if(confirm('Clear all completed-session ticks on this device?')){state.done={};save();renderWeek();}};
+init();
+</script>
+</body></html>
