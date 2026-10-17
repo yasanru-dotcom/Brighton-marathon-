@@ -1,0 +1,361 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#123b52">
+<title>Brighton Marathon 2027 | 3:15 Plan</title>
+<style>
+:root{--navy:#123b52;--blue:#28718a;--bg:#f2f6f8;--line:#dbe5e9;--green:#25805b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#1b2930;font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:linear-gradient(135deg,#123b52,#28718a);color:white;padding:25px 17px}
+header h1{font-size:26px;line-height:1.2;margin:0 0 8px}
+header p{margin:4px 0}
+main{max-width:850px;margin:auto;padding:14px}
+.card{background:white;border:1px solid var(--line);border-radius:15px;padding:16px;margin-bottom:14px}
+h2{font-size:19px;margin:0 0 12px}
+.small{font-size:13px;color:#61717a}
+select,button{font:inherit;border-radius:10px;padding:11px;border:1px solid #c6d5dc;width:100%}
+select{background:white}
+button{background:var(--navy);color:white;font-weight:650;border:0;cursor:pointer}
+button.secondary{background:#edf4f6;color:var(--navy);border:1px solid var(--line)}
+.controls,.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.progress{height:9px;background:#e3ecef;border-radius:20px;overflow:hidden;margin:10px 0}
+#bar{height:100%;width:0;background:var(--green)}
+.weekhead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.target{font-weight:bold;color:var(--blue);text-align:right}
+.day{display:grid;grid-template-columns:25px 1fr;gap:9px;padding:12px 0;border-top:1px solid var(--line)}
+.day input{width:21px;height:21px;margin:2px 0 0;accent-color:var(--green)}
+.dayname{font-size:14px;font-weight:750;color:var(--navy)}
+.day.done .detail{text-decoration:line-through;color:#77858b}
+.detail{margin-top:3px}
+.tag{font-size:12px;color:#64747b;margin-top:2px}
+.pacerow{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:8px 0}
+.pacerow:last-child{border:0}
+.pacerow span:last-child{text-align:right}
+.notice{background:#fff7e8;border:1px solid #f0d7a4;border-radius:10px;padding:12px;font-size:14px}
+.actions{margin-top:10px}
+footer{text-align:center;font-size:12px;color:#64747b;padding:15px}
+@media(min-width:650px){main{padding:22px}.days{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}}
+</style>
+</head>
+<body>
+<header>
+<h1>Brighton Marathon 2027</h1>
+<p>22-week training planner · Sunday 4 April 2027</p>
+<p><strong>Goal: 3:15:00 · Marathon pace: 4:37/km</strong></p>
+</header>
+<main>
+<section class="card">
+<h2>Your training progress</h2>
+<div class="progress"><div id="bar"></div></div>
+<p id="progressText" class="small">0 sessions completed</p>
+<div class="controls">
+<label><span class="small">Select week</span><select id="week"></select></label>
+<label><span class="small">Quick navigation</span><button class="secondary" id="current">Current week</button></label>
+</div>
+<div class="actions">
+<button id="export">Export progress</button>
+<button class="secondary" id="import">Import backup</button>
+</div>
+<input type="file" id="file" accept=".json,application/json" hidden>
+<p class="small">Completed sessions save in this browser on this device. Export a backup before changing phones or browsers.</p>
+</section>
+
+<section class="card">
+<h2>Pace guide</h2>
+<div class="pacerow"><strong>Recovery</strong><span>5:45–6:20/km or slower</span></div>
+<div class="pacerow"><strong>Easy</strong><span>5:25–6:10/km</span></div>
+<div class="pacerow"><strong>Steady</strong><span>5:00–5:25/km</span></div>
+<div class="pacerow"><strong>Marathon pace</strong><span>4:37/km</span></div>
+<div class="pacerow"><strong>Threshold</strong><span>Initially 4:25–4:35/km</span></div>
+<div class="pacerow"><strong>10 km effort</strong><span>About 4:05–4:15/km</span></div>
+<p class="small">Use effort, conditions and recovery to guide your pace. These are starting ranges, not compulsory targets.</p>
+</section>
+
+<section id="plan"></section>
+
+<section class="card">
+<h2>Strength, recovery and fuelling</h2>
+<p><strong>Strength A — Monday:</strong> 20–30 minutes of controlled single-leg work, calf raises, glute/hip exercises and trunk stability.</p>
+<p><strong>Strength B — Friday:</strong> 15–25 minutes of lighter posterior-chain, calf and core exercises. Avoid heavy lifting that leaves your legs sore for Sunday.</p>
+<p><strong>Long runs:</strong> Practise your race-day carbohydrate, fluid and gel plan. Test everything in training.</p>
+<div class="notice"><strong>Important:</strong> This is a guide, not a requirement to run seven days every week. Take optional rest days, do not make up missed mileage, and reduce training if fatigue or pain accumulates. Stop if pain changes your running stride. Weekly totals are approximate; individual day distances can be adjusted.</div>
+</section>
+</main>
+<footer>Brighton Marathon · 4 April 2027 · Personal training planner</footer>
+
+<script>
+const weeks = [
+["2–8 Nov 2026","35–45 km","Recovery after previous marathon",[
+"Rest; gentle mobility if comfortable.",
+"6–8 km easy.",
+"6–8 km easy.",
+"6–8 km easy, conversational.",
+"Rest.",
+"5–7 km easy, optional.",
+"12–16 km easy long run."
+]],
+["9–15 Nov","50–60 km","Rebuild",[
+"8 km easy + Strength A.",
+"10–12 km easy + 6 × 20-second relaxed strides.",
+"8–10 km easy.",
+"10–12 km comfortable aerobic.",
+"6–8 km recovery + Strength B.",
+"Rest or 5 km very easy.",
+"16–20 km easy long run."
+]],
+["16–22 Nov","65–75 km","Threshold returns",[
+"8–10 km easy + Strength A.",
+"12–14 km total with 3 × 8 min threshold; 2 min jog recovery.",
+"10–12 km easy.",
+"12–14 km aerobic.",
+"8 km recovery + Strength B.",
+"Rest or 5–6 km easy.",
+"20–22 km easy long run."
+]],
+["23–29 Nov","80–85 km","Aerobic build",[
+"10 km easy + Strength A.",
+"14–16 km total with 4 × 8 min threshold; 2 min jog recovery.",
+"12 km easy.",
+"14–16 km aerobic.",
+"8 km recovery + Strength B.",
+"Rest or 6 km recovery.",
+"22–24 km easy long run."
+]],
+["30 Nov–6 Dec","~90 km","Threshold endurance",[
+"10 km easy + Strength A.",
+"16 km total with 4 × 2 km threshold; 2 min jog recovery.",
+"12 km easy.",
+"16 km comfortable aerobic.",
+"8 km recovery + Strength B.",
+"6 km recovery.",
+"24–26 km easy long run."
+]],
+["7–13 Dec","~95 km","Long-run progression",[
+"10 km easy + Strength A.",
+"16–18 km total with 3 × 3 km threshold; 3 min jog recovery.",
+"12 km easy.",
+"16 km aerobic.",
+"8 km recovery + Strength B.",
+"6 km recovery.",
+"26–28 km easy; practise fuelling."
+]],
+["14–20 Dec","80–85 km","Cutback",[
+"8 km easy + light Strength A.",
+"13–14 km total with 3 × 8 min threshold.",
+"10 km easy.",
+"14 km comfortable aerobic.",
+"8 km recovery + light Strength B.",
+"Rest or 5 km easy.",
+"22–24 km easy long run."
+]],
+["21–27 Dec","~95 km","Threshold endurance",[
+"10 km easy + Strength A.",
+"16–18 km total with 5 × 2 km threshold; 2 min jog recovery.",
+"12 km easy.",
+"16 km aerobic.",
+"8 km recovery + Strength B.",
+"6 km recovery.",
+"26–28 km easy long run."
+]],
+["28 Dec–3 Jan","~100 km","Steady volume",[
+"10 km easy + Strength A.",
+"17–18 km total with 4 × 2.5 km threshold; 2–3 min jog recovery.",
+"13 km easy.",
+"17 km aerobic.",
+"8 km recovery + Strength B.",
+"6 km recovery.",
+"28 km easy; practise fuelling."
+]],
+["4–10 Jan 2027","85–90 km","Cutback",[
+"8 km easy + light Strength A.",
+"14–15 km total with 4 × 8 min threshold.",
+"11 km easy.",
+"14 km aerobic.",
+"8 km recovery + light Strength B.",
+"Rest or 5 km easy.",
+"23–25 km easy long run."
+]],
+["11–17 Jan","~100 km","Threshold endurance",[
+"10 km easy + Strength A.",
+"17–18 km total with 3 × 3 km threshold; controlled.",
+"13 km easy.",
+"17 km aerobic.",
+"8 km recovery + Strength B.",
+"6 km recovery.",
+"28–30 km easy long run."
+]],
+["18–24 Jan","~105 km","Marathon-specific introduction",[
+"10 km easy + Strength A.",
+"18 km total with 6 × 2 km threshold; jog recoveries.",
+"14 km easy.",
+"17 km aerobic; last 5 km steady only if fresh.",
+"8 km recovery + Strength B.",
+"6 km recovery.",
+"28 km easy long run."
+]],
+["25–31 Jan","~90 km","Cutback",[
+"8 km easy + light Strength A.",
+"14 km total with 3 × 2 km threshold.",
+"12 km easy.",
+"15 km aerobic.",
+"8 km recovery + light Strength B.",
+"Rest or 5 km easy.",
+"24–26 km easy long run."
+]],
+["1–7 Feb","~105 km","Marathon-specific build",[
+"10 km easy + Strength A.",
+"17 km total with 4 × 2.5 km threshold.",
+"14 km easy.",
+"18 km total including 3 × 4 km at MP; 1 km easy between.",
+"8 km recovery + Strength B.",
+"6 km recovery.",
+"30 km easy; practise fuelling."
+]],
+["8–14 Feb","105–110 km","Peak endurance",[
+"10 km easy + Strength A.",
+"18 km total with 3 × 3 km threshold.",
+"14 km easy.",
+"18 km comfortable aerobic.",
+"8 km recovery + Strength B.",
+"6 km recovery.",
+"30–32 km easy; practise race fuelling."
+]],
+["15–21 Feb","90–95 km","Cutback",[
+"8 km easy + light Strength A.",
+"14 km total with 3 × 8 min threshold.",
+"12 km easy.",
+"15 km aerobic.",
+"8 km recovery + light Strength B.",
+"Rest or 5 km easy.",
+"24–26 km easy long run."
+]],
+["22–28 Feb","~105 km","Marathon pace endurance",[
+"10 km easy + Strength A.",
+"17 km total with 5 × 2 km threshold.",
+"14 km easy.",
+"16 km total with 12–14 km at MP only if recovered.",
+"8 km recovery + Strength B.",
+"6 km recovery.",
+"30 km easy long run."
+]],
+["1–7 Mar","105–110 km","Peak marathon-specific week",[
+"10 km easy + Strength A; avoid soreness.",
+"16–18 km total with 4 × 2 km threshold, controlled.",
+"14 km easy.",
+"16 km aerobic, or 2 × 4 km at MP if fresh.",
+"8 km recovery + light Strength B.",
+"6 km recovery.",
+"30–32 km easy; optional 10–12 km MP finish only if robust and recovered."
+]],
+["8–14 Mar","90–100 km","Taper begins",[
+"8–10 km easy + light Strength A.",
+"14–16 km total with 3 × 2 km threshold.",
+"12 km easy.",
+"14–16 km aerobic.",
+"8 km recovery + light Strength B.",
+"Rest or 5 km easy.",
+"26–28 km; optional 6–8 km MP only if fresh."
+]],
+["15–21 Mar","75–85 km","Taper 2",[
+"8 km easy + light Strength A.",
+"13–15 km total with 3 × 10 min threshold or 3 × 2 km.",
+"10–12 km easy.",
+"16–18 km total including 3 × 4 km at MP; controlled.",
+"6–8 km recovery + very light Strength B.",
+"Rest or 5 km very easy.",
+"22–24 km easy."
+]],
+["22–28 Mar","55–65 km","Taper 3",[
+"7–8 km easy + mobility.",
+"12–14 km total including 2 × 4 km at MP.",
+"8–10 km easy.",
+"10–12 km easy + 4–6 relaxed strides.",
+"6–8 km easy.",
+"Rest.",
+"16–18 km easy."
+]],
+["29 Mar–4 Apr","~45–55 km incl. race","Race week",[
+"6–8 km easy.",
+"8–10 km total including 3 × 1 km at MP; easy recoveries.",
+"6–8 km easy.",
+"5–6 km easy + 4 short relaxed strides.",
+"Rest; prepare kit and fuelling.",
+"15–20 min shakeout or rest.",
+"RACE DAY: Brighton Marathon, 42.2 km. Goal 3:15; average pace 4:37/km. Start controlled and fuel early."
+]]
+];
+
+const days=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const select=document.getElementById("week");
+weeks.forEach((w,i)=>{
+ const o=document.createElement("option");
+ o.value=i;o.textContent=`Week ${i+1} · ${w[0]}`;select.appendChild(o);
+});
+let done={};
+try{done=JSON.parse(localStorage.getItem("brighton315progress")||"{}")||{};}catch(e){done={};}
+function save(){
+ try{localStorage.setItem("brighton315progress",JSON.stringify(done));}catch(e){}
+ updateProgress();
+}
+function updateProgress(){
+ const count=Object.values(done).filter(Boolean).length;
+ const total=weeks.length*7;
+ document.getElementById("bar").style.width=(100*count/total)+"%";
+ document.getElementById("progressText").textContent=
+ `${count} of ${total} daily entries completed (${Math.round(100*count/total)}%)`;
+}
+function render(){
+ const i=Number(select.value),w=weeks[i];
+ const plan=document.getElementById("plan");
+ const dayHtml=w[3].map((text,j)=>{
+  const key=`${i}-${j}`,checked=!!done[key];
+  return `<div class="day ${checked?"done":""}">
+  <input type="checkbox" data-key="${key}" ${checked?"checked":""} aria-label="Complete ${days[j]}">
+  <div><div class="dayname">${days[j]}${i===21&&j===6?" · RACE DAY":""}</div>
+  <div class="detail">${text}</div></div></div>`;
+ }).join("");
+ plan.innerHTML=`<section class="card">
+ <div class="weekhead"><div><h2>Week ${i+1} · ${w[0]}</h2><div class="small">${w[2]}</div></div>
+ <div class="target">${w[1]}</div></div>
+ <div class="days">${dayHtml}</div></section>`;
+ plan.querySelectorAll("input").forEach(cb=>{
+  cb.addEventListener("change",()=>{
+   if(cb.checked)done[cb.dataset.key]=true;
+   else delete done[cb.dataset.key];
+   save();render();
+  });
+ });
+}
+select.addEventListener("change",render);
+document.getElementById("current").addEventListener("click",()=>{
+ const start=new Date("2026-11-02T00:00:00");
+ const now=new Date();
+ let i=Math.floor((now-start)/(7*86400000));
+ i=Math.max(0,Math.min(21,i));
+ select.value=i;render();
+});
+document.getElementById("export").addEventListener("click",()=>{
+ const blob=new Blob([JSON.stringify({app:"Brighton 3:15 plan",done},null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");a.href=url;
+ a.download="brighton-marathon-progress.json";a.click();
+ URL.revokeObjectURL(url);
+});
+document.getElementById("import").addEventListener("click",()=>document.getElementById("file").click());
+document.getElementById("file").addEventListener("change",async e=>{
+ const f=e.target.files[0];if(!f)return;
+ try{
+  const data=JSON.parse(await f.text());
+  if(!data.done||typeof data.done!=="object")throw Error();
+  done=data.done;save();render();alert("Progress imported.");
+ }catch(err){alert("Invalid backup file. Choose a JSON backup from this app.");}
+ e.target.value="";
+});
+render();updateProgress();
+</script>
+</body>
+</html>
